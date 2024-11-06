@@ -8,6 +8,7 @@ type User = {
 
 export const useUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [isUserError, setUserError] = useState(false);
 
   const getUsers = async () => {
     try {
@@ -27,6 +28,7 @@ export const useUsers = () => {
         setUsers(filteredUser);
       }
     } catch (err) {
+      setUserError(true);
       console.log(err);
     }
   };
@@ -35,5 +37,5 @@ export const useUsers = () => {
     getUsers();
   }, []);
 
-  return users;
+  return { users, isUserError };
 };

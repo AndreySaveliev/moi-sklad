@@ -7,23 +7,21 @@ type Todo = {
   completed: boolean;
 };
 
-export const useTodos = (userId: number) => {
+export const useTodos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [completedTodos, setCompletedTodos] = useState<Todo[]>([]);
+  const [isTodosError, setTodosError] = useState(false);
   const getTodos = async () => {
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/todos",
       );
-
       if (response.status === 200) {
         const data = await response.json();
-        const userTodos = data.filter((todo: Todo) => todo.userId == userId);
-        const complitedTodos = userTodos.filter((todo: Todo) => todo.completed);
-        setTodos(userTodos);
-        setCompletedTodos(complitedTodos);
+
+        setTodos(data);
       }
     } catch (err) {
+      setTodosError(true);
       console.log(err);
     }
   };
@@ -32,5 +30,5 @@ export const useTodos = (userId: number) => {
     getTodos();
   }, []);
 
-  return { todos, completedTodos };
+  return { todos, isTodosError };
 };

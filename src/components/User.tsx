@@ -1,4 +1,3 @@
-import { useTodos } from "../hooks/useTodos";
 import userIcon from "./../assets/userIcon.svg";
 
 type User = {
@@ -6,10 +5,18 @@ type User = {
   name: string;
   email: string;
 };
+type Todo = {
+  userId: number;
+  id: string;
+  title: string;
+  completed: boolean;
+};
 
-function User({ user }: { user: User }) {
-  // const { todos,completedTodos } = useTodos(user.id);
-  const { completedTodos } = useTodos(user.id);
+function User({ user, todos }: { user: User; todos: Todo[] }) {
+  const completedTodos = todos.filter(
+    (todo) => todo.completed && todo.userId === user.id,
+  );
+
   return (
     <div className="flex flex-row items-center border-b-[1px] border-borderColor py-5 text-white sm:py-3">
       <p className="min-w-[47px] text-center sm:text-xs">{user.id}</p>
